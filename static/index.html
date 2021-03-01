@@ -1,0 +1,26 @@
+<html>
+<body>
+<h3>上传组件</h3>
+<input type="file" name="files" id="upload" multiple onchange="handleUoload()"/>
+
+<script type="text/javascript">
+  function handleUoload() {
+    const files = document.querySelector('#upload').files;
+    if (files.length > 0) {
+      const xhr = new XMLHttpRequest();
+      const form = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        form.append('files', files[i]);
+      }
+      xhr.open('POST', 'http://localhost:8081/file_upload', true);
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          console.log('上传成功~');
+        }
+      }
+      xhr.send(form);
+    }
+  }
+</script>
+</body>
+</html>
