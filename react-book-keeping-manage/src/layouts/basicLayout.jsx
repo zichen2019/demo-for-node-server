@@ -1,5 +1,9 @@
-import React, { useState, useEffect, useCallback, Fragment } from 'react';
-import { Button, Result, Link } from 'antd'
+import React, {useRef, useMemo, useState, useEffect, useCallback, Fragment } from 'react';
+import { Button, Result } from 'antd';
+import { Link } from 'umi';
+import LayoutRender from '@/components/LayoutRender';
+import rightHeaderContent from '@/components/GlobalHeader/rightHeaderContent.jsx';
+import logo from '@/assets/logo/logo.png'
 
 const notMatch = (
   <Result
@@ -28,6 +32,7 @@ const defaultFooterDom = (
   <div>footer</div>
 )
 
+
 const BasicLayout = (props) => {
   const {
     dispatch,
@@ -35,46 +40,27 @@ const BasicLayout = (props) => {
     settings,
     location = {
       pathname: '/'
-    }
+    },
+    routes,
+    theme='dark'
   } = props;
 
-  const menuDataRef = useRef([]);
-  useEffect(() => {
-    if (dispatch) {
-      dispatch({
-        type: 'user/fetchCurrent'
-      })
-    }
-  }, []);
+  console.log('props=', props)
 
-  /**
-   * handle collapse
-   */
-  const handleMenuCollpase = (payload) => {
-    if (dispatch) {
-      dispatch({
-        type: 'global/changeLayoutCollapsed',
-        payload
-      });
-    }
-  }
-
-  /**
-   * get children authority
-   */
-  const authorized = useMemo(
-    () => 
-      getMatchMenu(location.pathname || '/', menuDataRef.current).pop() || {
-        authority: undefined
-      },
-      [location.pathname],
-  );
-
-  const { formatMessage } = useIntl();
 
   return (
-    <Fragment>
-
-    </Fragment>
+    <>
+      <LayoutRender
+        logo={logo}
+        theme={theme}
+        onMenuHeaderClick={() => history.pushState('/')}
+        routes={routes}
+        headerRender={rightHeaderContent}
+      >
+        {children}
+      </LayoutRender>
+    </>
   )
 }
+
+export default BasicLayout;

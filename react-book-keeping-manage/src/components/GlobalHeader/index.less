@@ -1,0 +1,30 @@
+@pro-header-hover-bg: rgba(0, 0, 0, 0.025);
+
+.basic-header-wrap {
+  display: flex;
+  // flex-direction: row-reverse;
+  justify-content: flex-end;
+  & > div, & > span, & > button, & > a {
+    padding: 0 15px;
+    &:hover {
+      background: @pro-header-hover-bg;
+    }
+  }
+
+  .action {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    > span {
+      vertical-align: middle;
+    }
+    &:hover {
+      background: @pro-header-hover-bg;
+    }
+    &:global(.opened) {
+      background: @pro-header-hover-bg;
+    }
+  }
+}
