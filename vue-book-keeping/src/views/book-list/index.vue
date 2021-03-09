@@ -2,7 +2,7 @@
   <div class="book-list">
     <header class="book-list-detail-header">
       <!-- header -->
-      <van-nav-bar title="Book记账" />
+      <van-nav-bar title="Book" />
       <!-- sub header -->
       <div class="header-statistics">
         <van-row gutter="24">
@@ -100,83 +100,35 @@ export default {
           'payment': '5598.97',
         }
       }],
-      listData: [
-        {
-          list: [{
-            iconUrl: require('@/assets/logo.png'),
-            description: '买东西， 买东西买东西买东西买东西买东西',
-            extra: '-1.5',
-          }
-          ]
-        }, {
-          list: [{
-            iconUrl: require('@/assets/logo.png'),
-            description: '买东西， 买东西买东西买东西买东西买东西',
-            extra: '-1.5',
-          },{
-            iconUrl: require('@/assets/logo.png'),
-            description: '买东西， 买东西买东西买东西买东西买东西',
-            extra: '-1.5',
-          },{
-            iconUrl: require('@/assets/logo.png'),
-            description: '买东西， 买东西买东西买东西买东西买东西',
-            extra: '-1.5',
-          },{
-            iconUrl: require('@/assets/logo.png'),
-            description: '买东西， 买东西买东西买东西买东西买东西',
-            extra: '-1.5',
-          },{
-            iconUrl: require('@/assets/logo.png'),
-            description: '买东西， 买东西买东西买东西买东西买东西',
-            extra: '-1.5',
-          },{
-            iconUrl: require('@/assets/logo.png'),
-            description: '买东西， 买东西买东西买东西买东西买东西',
-            extra: '-1.5',
-          },{
-            iconUrl: require('@/assets/logo.png'),
-            description: '买东西， 买东西买东西买东西买东西买东西',
-            extra: '-1.5',
-          },{
-            iconUrl: require('@/assets/logo.png'),
-            description: '买东西， 买东西买东西买东西买东西买东西',
-            extra: '-1.5',
-          },{
-            iconUrl: require('@/assets/logo.png'),
-            description: '买东西， 买东西买东西买东西买东西买东西',
-            extra: '-1.5',
-          },{
-            iconUrl: require('@/assets/logo.png'),
-            description: '买东西， 买东西买东西买东西买东西买东西',
-            extra: '-1.5',
-          },{
-            iconUrl: require('@/assets/logo.png'),
-            description: '买东西， 买东西买东西买东西买东西买东西',
-            extra: '-1.5',
-          },{
-            iconUrl: require('@/assets/logo.png'),
-            description: '买东西， 买东西买东西买东西买东西买东西',
-            extra: '-1.5',
-          }
-          ]
-        }
-      ]
+      listData: [],
     }
   },
   methods: {
-   
+    fetchData() {
+      const { dispatch } = this.$store;
+      dispatch({
+        type: 'getBookKeepList',
+        userId: '12336',
+        date: '2021-03-08'
+      }).then(res => {
+        this.listData = res;
+      })
+    }
+  },
+  mounted() {
+    this.fetchData();
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .book-list {
+  height: 100vh;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   .book-list-detail-header {
-    flex: 104px;
     .van-nav-bar {
-      background: #fad958;
+      background: rgba(#ff9900, 0.7);
       font-family: PingFangSC-Regular, sans-serif;
       &::after {
         display: none;
@@ -184,7 +136,7 @@ export default {
     }
     .header-statistics {
       padding-top: 6px;
-      background: #fad958;
+      background: rgba(#ff9900, 0.7);
       .vertacal-divider {
         position: absolute;
         top: 50%;

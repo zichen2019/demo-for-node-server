@@ -5,7 +5,10 @@
       :key="index"
       :list="data.list"
     >
-      <p slot="sub-header-left">11月18日 星期日</p>
+      <p slot="sub-header-left">
+        {data.keeping_date}
+        <!-- 11月18日 星期日 -->
+      </p>
       <p slot="sub-header-right">支出：1.5</p>
     </list-item>
   </div>

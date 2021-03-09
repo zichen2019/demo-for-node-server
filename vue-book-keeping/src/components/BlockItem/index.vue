@@ -36,7 +36,7 @@
 
     <!-- 组件内调用的其他功能组件 -->
     <van-calendar
-      color="#fad958"
+      color="#ff9900"
       :min-date="minDate"
       v-model="show"
       @confirm="handleSelectCanlendar"

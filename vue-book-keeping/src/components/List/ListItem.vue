@@ -12,7 +12,7 @@
         class="l-item"
       >
         <span class="icon"><img :src="l.iconUrl" alt="icon"></span>
-        <span class="desc">{{l.description}}</span>
+        <span class="desc">{{l.keeping_description}}</span>
         <span class="extra">{{l.extra}}</span>
       </li>
     </ul>
@@ -43,6 +43,7 @@ export default {
     color: #999;
     font-size: 13px;
     position: relative;
+    background: #fafafa;
     &::after {
       content: '';
       height: 0;
