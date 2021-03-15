@@ -32,7 +32,7 @@ const Index = ({
   itemRender,
   footerRender,
   menuDataRender,
-  topHeaderRender,                              // 右上角渲染内容体
+  headerRender,                              // 页头渲染逻辑
   postMenuData,
   staticContext,
   children,
@@ -48,7 +48,7 @@ const Index = ({
         <BasicMenuRender theme={theme} {...restProps}/>
       </Sider>
       <Layout>
-        <Header headerRender={topHeaderRender} className="layout-sub-header" />
+        <Header headerRender={headerRender} className="layout-sub-header" />
         <Content>{children}</Content>
         <Footer></Footer>
       </Layout>

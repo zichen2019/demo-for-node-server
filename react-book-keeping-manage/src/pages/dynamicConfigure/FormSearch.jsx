@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
+import { useState } from '@/utils/hooks';
 import { Form, Row, Col, Input, Button } from 'antd';
 import { isValidArray } from '@/utils';
 import { compose, isEmpty } from 'lodash'
@@ -26,8 +27,6 @@ const FormSearch = ({
       const list = queryFields.map((l) => (
         l.map((item, index) => renderField(item, `${item.dataIndex}_${index}`))
       ));
-
-      console.log('list= ??', list)
 
       setFieldsGroupList(list)
     }

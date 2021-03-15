@@ -18,3 +18,7 @@ export function classnames () {
   }, []);
   return cNames && cNames.join(' ');
 }
+
+export function isPrimitive (n) {
+  return typeof n === 'number' || typeof n === 'string';
+}

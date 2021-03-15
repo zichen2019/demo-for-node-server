@@ -55,7 +55,7 @@ const BasicLayout = (props) => {
         theme={theme}
         onMenuHeaderClick={() => history.pushState('/')}
         routes={routes}
-        topHeaderRender={rightHeaderContent}
+        headerRender={rightHeaderContent}
       >
         {children}
       </LayoutRender>
