@@ -3,6 +3,7 @@ const router = express.Router();
 
 const static = require('./routes/static');
 const upload = require('./routes/upload');
+const dynamicConf = require('./routes/dynamicConf');
 
 const routes = [];
 Array.prototype.push.call(
@@ -13,7 +14,11 @@ Array.prototype.push.call(
   ...Array.isArray(upload)
     ? upload
     : [upload],
+  ...Array.isArray(dynamicConf)
+    ? dynamicConf
+    : [dynamicConf],
 );
+
 
 routes.forEach(({
   pathname,

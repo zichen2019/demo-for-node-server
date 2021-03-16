@@ -22,3 +22,19 @@ export function classnames () {
 export function isPrimitive (n) {
   return typeof n === 'number' || typeof n === 'string';
 }
+
+export function getResponse (response, errCallback) {
+  if (response && response.failed) {
+    if (errCallback) {
+      errCallback(response);
+    } else {
+      const msg = {
+        message: '操作失败',
+        description: response.message
+      }
+      return msg;
+    }
+  } else {
+    return response;
+  }
+}

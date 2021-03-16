@@ -5,6 +5,12 @@ const cookieParser = require('cookie-parser');
 const app = new express();
 const port = 8081;
 
+const allowCrossDomain = (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:8000'),
+  res.header('Content-Type', 'text/plain;charset=utf-8')
+  next();
+}
+app.use(allowCrossDomain)
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(router);

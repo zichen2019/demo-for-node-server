@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { isPrimitive } from './index';
 
-export function useState (initialState) {
-  const [state, set] = React.useState(initialState);
+export function useSetState (initialState) {
+  const [state, set] = useState(initialState);
   let setState = null;
   if (isPrimitive(initialState)) {
     setState = useCallback(

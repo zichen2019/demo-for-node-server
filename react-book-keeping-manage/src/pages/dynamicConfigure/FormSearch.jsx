@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
-import { useState } from '@/utils/hooks';
+import { useSetState } from '@/utils/hooks';
 import { Form, Row, Col, Input, Button } from 'antd';
 import { isValidArray } from '@/utils';
 import { compose, isEmpty } from 'lodash'
@@ -10,21 +10,21 @@ const formItemLayout = {
 };
 
 const FormSearch = ({
-  queryFields,
+  formFields,
   viewCode,
   templateCode,
 }) => {
-  const [state, setState] = useState({
+  const [state, setState] = useSetState({
     expandForm: false,
   })
-  const [fGroupList, setFieldsGroupList] = useState([]);
+  const [fGroupList, setFieldsGroupList] = useSetState([]);
   const [form] = Form.useForm();
 
   const { expandForm } = state;
   // 解析筛选表单
   useEffect(() => {
-    if (isValidArray(queryFields)) {
-      const list = queryFields.map((l) => (
+    if (isValidArray(formFields)) {
+      const list = formFields.map((l) => (
         l.map((item, index) => renderField(item, `${item.dataIndex}_${index}`))
       ));
 
@@ -92,7 +92,7 @@ const FormSearch = ({
         </Col>
         <Col span={6} className="search-btn-more">
           {/* <FormItem> */}
-            <Button disabled={isEmpty(queryFields[1])} onClick={() => handleToggleForm(!expandForm)}>
+            <Button disabled={isEmpty(formFields[1])} onClick={() => handleToggleForm(!expandForm)}>
               {expandForm ? '收起查询' : '更多查询'}
             </Button>
             <Button data-code="reset" onClick={handleReset}>
