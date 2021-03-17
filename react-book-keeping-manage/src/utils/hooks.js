@@ -17,7 +17,7 @@ export function useSetState (initialState) {
   if (Array.isArray(initialState)) {
     setState = useCallback(
       (nextState) => {
-        set([...state, ...nextState])
+        set((prevState) => ([...prevState, ...nextState]))
       }, 
       [set]
     )
@@ -26,7 +26,7 @@ export function useSetState (initialState) {
 
   setState = useCallback(
     (nextState) => {
-      set({...state, ...nextState})
+      set((prevState) => ({...prevState, ...nextState}))
     }, 
     [set]
   )

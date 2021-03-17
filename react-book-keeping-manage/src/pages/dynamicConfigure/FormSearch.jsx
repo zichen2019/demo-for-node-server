@@ -1,8 +1,8 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useMemo, useState } from 'react';
 import { useSetState } from '@/utils/hooks';
-import { Form, Row, Col, Input, Button } from 'antd';
-import { isValidArray } from '@/utils';
-import { compose, isEmpty } from 'lodash'
+import { Select, Form, Row, Col, Input, Button } from 'antd';
+import { isEmpty } from 'lodash';
+import { fieldRender } from '@/utils/fieldRender';
 
 const formItemLayout = {
   labelCol: { span: 10 },
@@ -10,45 +10,44 @@ const formItemLayout = {
 };
 
 const FormSearch = ({
-  formFields,
+  queryFields,
+  fieldsLen,
   viewCode,
-  templateCode,
+  valCodeSet,
 }) => {
   const [state, setState] = useSetState({
     expandForm: false,
   })
-  const [fGroupList, setFieldsGroupList] = useSetState([]);
+  const [fGroupList, setFieldsGroupList] = useState([]);
   const [form] = Form.useForm();
 
   const { expandForm } = state;
   // 解析筛选表单
   useEffect(() => {
-    if (isValidArray(formFields)) {
-      const list = formFields.map((l) => (
-        l.map((item, index) => renderField(item, `${item.dataIndex}_${index}`))
-      ));
+    console.log('queryFields=', queryFields)
+    const list = fieldsLen && queryFields.map((l) => (
+      l.map((item, index) => 
+        ['SELECT'].includes(item.fieldWidget)
+          ? renderField({
+            ...item,
+            sourceSet: valCodeSet[item.sourceCode]
+          }, `${item.dataIndex}_${index}`)
+          : renderField(item, `${item.dataIndex}_${index}`)
+      )
+    )) || [];
 
-      setFieldsGroupList(list)
-    }
-  }, [viewCode, templateCode])
+    setFieldsGroupList(list)
+  }, [viewCode, fieldsLen])
 
   // 渲染表单逻辑
   const renderField = (field, key) => {
-    let component = null;
-
-    switch(field.fieldWidget) {
-      case 'INPUT':
-        component = (<Input onChange={field.onChange} disabled={field.disabled} />);
-        break;
-      default:
-        break;
-    }
+    let component = fieldRender(field, key);
 
     return (
       <Col span={8} key={key}>
         <Form.Item
           {...formItemLayout}
-          label={field.label}
+          label={field.title}
           name={field.dataIndex}
           rules={[{required: field.required, message: `${field.dataIndex} is required!` }]}
         >
@@ -91,25 +90,31 @@ const FormSearch = ({
           ))}
         </Col>
         <Col span={6} className="search-btn-more">
-          {/* <FormItem> */}
-            <Button disabled={isEmpty(formFields[1])} onClick={() => handleToggleForm(!expandForm)}>
-              {expandForm ? '收起查询' : '更多查询'}
-            </Button>
-            <Button data-code="reset" onClick={handleReset}>
-              重置
-            </Button>
-            <Button data-code="search" type="primary" htmlType="submit" onClick={handleSearch}>
-              查询
-            </Button>
-            {/* </FormItem> */}
+          <Button disabled={isEmpty(fGroupList[1])} onClick={() => handleToggleForm(!expandForm)}>
+            {expandForm ? '收起查询' : '更多查询'}
+          </Button>
+          <Button data-code="reset" onClick={handleReset}>
+            重置
+          </Button>
+          <Button data-code="search" type="primary" htmlType="submit" onClick={handleSearch}>
+            查询
+          </Button>
         </Col>
       </Row>
     </Form>
   )
 }
 
-export default FormSearch;
+const Index = ({
+  queryFields,
+  viewCode,
+  ...props
+}) => {
+  const fieldsLen = Array.isArray(queryFields) && queryFields.flat(2).length || 0;
+  return useMemo(
+    () => <FormSearch {...{queryFields, fieldsLen, ...props}}/>,
+    [fieldsLen, viewCode]
+  )
+};
 
-// export default compose(
-//   // Form.create({fieldNameProp: null})
-// )(FormSearch);
+export default Index;

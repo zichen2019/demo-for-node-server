@@ -1,8 +1,8 @@
 
 .advanced-search {
   margin: 10px 0;
-  input {
-    border-radius: 3px;
+  input, .ant-select-selector {
+    border-radius: 3px !important;
     line-height: 1.5;
   }
   .search-btn-more {
@@ -24,5 +24,18 @@
     label {
       font-size: 13px;
     }
+  }
+}
+
+.table-wrapper {
+  .ant-form-item {
+    margin-bottom: 0;
+  }
+}
+
+.ant-select-dropdown .ant-select-item {
+  font-size: 12px;
+  &.ant-select-item-option-active {
+    background-color: rgba(#1d7ad9, 0.1);
   }
 }
