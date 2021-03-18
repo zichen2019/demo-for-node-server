@@ -36,7 +36,6 @@ const Index = ({
       payload: {viewCode}
     }).then((list) => {
       if (list && Array.isArray(list)) {
-        // console.log(list)
         const columns = [];
         const queryFields = [];
 
@@ -87,8 +86,6 @@ const Index = ({
       queryFields: fields,
       initialable: true,
     };
-
-    console.log('updateState=', updateState)
 
     dispatch({
       type: 'dynamicConf/fetchValSet',

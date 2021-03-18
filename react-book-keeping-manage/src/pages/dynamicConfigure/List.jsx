@@ -59,7 +59,6 @@ const List = ({
       } : column
     ) || [];
 
-    console.log('list=', list)
     setColList(list)
     fetchList();
   }, [viewCode, colsLen])
@@ -77,8 +76,6 @@ const List = ({
 
   // 新建列表行数据
   const handleCreateLine = useCallback(() => {
-  console.log('dataSource inner=', dataSource)
-
     const rowKey = 'lineId'
     const newLine = {
       _status: 'create',

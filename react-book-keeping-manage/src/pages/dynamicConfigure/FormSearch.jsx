@@ -24,7 +24,6 @@ const FormSearch = ({
   const { expandForm } = state;
   // 解析筛选表单
   useEffect(() => {
-    console.log('queryFields=', queryFields)
     const list = fieldsLen && queryFields.map((l) => (
       l.map((item, index) => 
         ['SELECT'].includes(item.fieldWidget)

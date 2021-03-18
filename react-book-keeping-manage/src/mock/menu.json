@@ -1,6 +1,6 @@
 {
-  "dynamicField": "dynamicField",
-  "dynamicConfigure": "dynamicConfigure",
+  "dynamicField": "动态表单",
+  "dynamicConfigure": "动态列配置",
   "menu1": "菜单1",
   "menu2": "菜单2",
   "menu3": "菜单3",

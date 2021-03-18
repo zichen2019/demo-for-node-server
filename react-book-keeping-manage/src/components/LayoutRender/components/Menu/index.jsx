@@ -23,7 +23,6 @@ const compileMenu = (routes) => {
         return menu;
       }
 
-      console.log('route=', route)
       return false;
     }).filter(Boolean)
     : []
@@ -37,7 +36,6 @@ const renderMenu = ({
   defaultOpenKeys,
   defaultSelectedKeys
 }) => {
-  console.log('theme=', theme)
   const menuRoutes = routes.filter(route => route.path === '/');
   if (
     menuRoutes.length === 0 ||
@@ -48,8 +46,9 @@ const renderMenu = ({
 
   if (menus.length === 0) return null;
 
-  defaultOpenKeys = ['dashboard'];
-  defaultSelectedKeys = ['analysis'];
+  console.log('menus=', menus)
+  defaultOpenKeys = menus[0].key;
+  defaultSelectedKeys = menus[0].children[0]?.key;
 
   return (
     <Menu

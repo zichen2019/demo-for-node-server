@@ -45,9 +45,6 @@ const BasicLayout = (props) => {
     theme='dark'
   } = props;
 
-  console.log('props=', props)
-
-
   return (
     <>
       <LayoutRender

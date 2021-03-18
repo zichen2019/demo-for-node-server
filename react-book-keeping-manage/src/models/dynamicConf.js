@@ -27,7 +27,6 @@ export default {
     },
     *saveTableDataList({ payload }, { call }) {
       const response = getResponse(yield call(updateTableDataList, payload));
-      console.log('response=', response)
       return response && response.data;
     }
   },
