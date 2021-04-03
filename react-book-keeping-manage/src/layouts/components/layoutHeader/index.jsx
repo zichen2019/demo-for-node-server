@@ -46,7 +46,7 @@ const userMenu = (
   </Menu>
 );
 
-const rightHeaderContent = () => {
+const layoutHeaderContent = () => {
   return (
     <div className="basic-header-wrap">
       <Tooltip title="使用文档">
@@ -76,4 +76,4 @@ const rightHeaderContent = () => {
   )
 }
 
-export default rightHeaderContent;
+export default layoutHeaderContent;

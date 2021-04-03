@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, Fragment, useRef } from 'react';
 import { Button } from 'antd';
-import { Header,Content } from '@/components/LayoutRender';
+import { Header, Content } from '@/layouts/components/LayoutRender';
 import { connect } from 'dva'; 
 import { useSetState } from '@/utils/hooks';
 

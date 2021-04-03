@@ -38,3 +38,24 @@ export function getResponse (response, errCallback) {
     return response;
   }
 }
+
+export function setSession(key, val) {
+  const formatValue = val && JSON.stringify(val);
+  window.sessionStorage.setItem(key, formatValue);
+}
+
+export function getSession(key) {
+  const value = window.sessionStorage.getItem(key);
+
+  if (value) {
+    return JSON.parse(value);
+  }
+}
+
+export function removeAllCookie() {};
+
+export function removeAccessToken() {};
+
+export function catchNormalErr(response) {
+  return response;
+}

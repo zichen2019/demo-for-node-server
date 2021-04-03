@@ -15,6 +15,7 @@ export default {
   effects: {
     *fetchConfigureList({ payload }, { call }) {
       const response = getResponse(yield call(getConfigureList, payload));
+      console.log('response=', response)
       return response && response.data;
     },
     *fetchValSet({ payload }, { call }) {

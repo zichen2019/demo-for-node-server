@@ -1,8 +1,8 @@
 import React, {useRef, useMemo, useState, useEffect, useCallback, Fragment } from 'react';
 import { Button, Result } from 'antd';
 import { Link } from 'umi';
-import LayoutRender from '@/components/LayoutRender';
-import rightHeaderContent from '@/components/GlobalHeader/rightHeaderContent.jsx';
+import LayoutRender from './components/LayoutRender';
+import layoutHeaderContent from './components/layoutHeader';
 import logo from '@/assets/logo/logo.png'
 
 const notMatch = (
@@ -52,7 +52,7 @@ const BasicLayout = (props) => {
         theme={theme}
         onMenuHeaderClick={() => history.pushState('/')}
         routes={routes}
-        headerRender={rightHeaderContent}
+        headerRender={layoutHeaderContent}
       >
         {children}
       </LayoutRender>
