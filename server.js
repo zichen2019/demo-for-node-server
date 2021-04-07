@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const app = new express();
 const port = 8081;
+const { createTable, insertData } = require('./src/sql/sql-utils')
 
 const allowCrossDomain = (req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:8000'),
@@ -24,3 +25,57 @@ const server = app.listen(port, 'localhost', () => {
   app.set('host_address', `${address}:${port}`)
   console.log('the server now is listening at http://%s:%s', address, port);
 })
+
+
+// const mySql = require('mysql');
+
+// const connection = mySql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'zichen2019',
+//   database: 'vueShop'
+// })
+
+// connection.connect();
+
+// createTable(connection, {
+//   tbName: 'test',
+//   primaryId: 'id',
+//   age: 'DECIMAL(5)',
+//   address: 'VARCHAR(40)',
+//   id: 'INT UNSIGNED AUTO_INCREMENT',
+//   name: 'VARCHAR(40) NOT NULL',
+//   phone: 'VARCHAR(20)',
+//   sex: 'CHAR(10)',
+// }).then(res=> {
+//   console.log('结果为：', res);
+// })
+
+insertData({tbName: 'test'}, [{
+  age: 18,
+  address: '上海青浦',
+  name: '张三',
+  phone: '12345',
+  sex: '男',
+}, {
+  age: 19,
+  address: '上海青浦',
+  name: '李四',
+  phone: '13456',
+  sex: '男',
+}, {
+  age: 20,
+  address: '上海青浦',
+  name: '王五',
+  phone: '13788828398',
+  sex: '男',
+}, {
+  age: 21,
+  address: '上海青浦',
+  name: '赵六',
+  phone: '13788828398111',
+  sex: '男',
+}])
+// .then(res=> {
+//   console.log('插入成功', res);
+// })
