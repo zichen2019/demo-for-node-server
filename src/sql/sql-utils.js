@@ -1,4 +1,6 @@
-const { query } = require('./query')
+const { query } = require('./query');
+const { addQuotation, isEmpty } = require('../utils/utils');
+const hasOwnProperty = Object.prototype.hasOwnProperty;
 
 /**
  * 删除数据库
@@ -146,11 +148,148 @@ exports.insertData = async function (options, data) {
 /**
  * 更新数据
  * @param {*} options                 数据库查询参数
+ * @param {*} keys                    需要更新的字段名集合
  * @param {*} data                    需要更新的数据
+ * @param {*} pKyName                需要更新的行的主键名
  */
-exports.updateData = async function(options, data) {
-  
+exports.updateData = async function(options, keys, data, pKyName) {
+  // 当主键名未提供时，警告提示是否使用默认主键名-id
+  if (!pKyName) console.warn("There has no primary key! Are you sure use key as 'id' ? ");
+
+  if (isEmpty(data))
+    throw Error('data is empty!');
+
+  // 当要更新的字段列表为空时，取data数据里的第一条里的key集合
+  const isLackUpKeys = isEmpty(keys);
+  let updateKeys;
+  if (isLackUpKeys) {
+    const validItem = data.find(item => !isEmpty(item));
+    // 不存在合法的数据项
+    if (validItem == null) throw Error('update data list is illegal!');
+
+    updateKeys = validItem;
+  } else {
+    updateKeys = keys.reduce((obj, item) => { obj[item] = null; return obj }, {})
+  }
+
+  const primaryKey = pKyName || 'id';
+
+  let TEMP_TABLE = data.reduce(function (result, item) {
+    // 当主键名未提供，且默认主键名id不存在对象内时，抛出错误;
+    if (!hasOwnProperty.call(item, primaryKey)) {
+      throw Error('Lack primary key!')
+    }
+
+    let value = 'select ' + 
+        (typeof item[primaryKey] === 'string'
+          ? addQuotation(item[primaryKey])
+          : item[primaryKey])
+        + ' as ' + primaryKey;
+
+    let itemVal;
+
+    for (let key in updateKeys) {
+      if (key === primaryKey) continue;
+      if (value !== '') value += ', ';
+
+      itemVal = item[key] || null;
+      value += 
+        (typeof itemVal === 'string'
+          ? addQuotation(itemVal)
+          : itemVal)
+        + ' as ' + key;
+    }
+
+    result += result === '' ? value : ' union ' + value;
+
+    return result;
+  }, '');
+
+  // console.log('TEMP_TABLE=', TEMP_TABLE)
+
+
+  try {
+    const UPDATE_SQL = 
+      'update ' + options.tbName + ' a join (' + TEMP_TABLE + ') b using (' + primaryKey + ') set ' +
+        (isLackUpKeys ? Object.keys(updateKeys) : keys).reduce(function(r, i) {
+          if (r !== '') r += ', ';
+          r += 'a.' + i + '=b.' + i;
+          return r;
+        }, '');
+
+    await query(UPDATE_SQL);
+    console.log('更新数据成功')
+  } catch(err) {
+    console.log('更新数据异常：', {code: err.code, msg: err.sqlMessage});
+  }
 }
+
+
+/**
+ * 删除数据表中的单条数据
+ * @param {*} tbName                数据库表名
+ * @param {*} pKyName                  数据表的行主键名
+ * @param {*} pKyVal               需要删除的行主键值
+ */ 
+exports.deleteSingleRecord = function(tbName, pKyName, pKyVal) {
+  if (!tbName || !pKyVal) return null;
+
+  if (!pKyName) pKyName = 'id';
+
+  const sql = 'delete from ' + tbName + ' where ' + pKyName + ' = ' + pKyVal;
+
+  query(sql).then(function () {
+    console.log('删除数据成功！')
+  }, function (err) {
+    console.log('删除数据异常：', {code: err.code, msg: err.sqlMessage})
+  })
+}
+
+/**
+ * 批量删除数据表的数据
+ * @param {*} tbName 
+ * @param {*} pKyName 
+ * @param {*} pKys 
+ */
+exports.deleteRecordBatch = function(tbName, pKyName, pKys) {
+  const LIMIT_NUM = 20;
+
+  if (isEmpty(pKys)) console.log('需要执行批量删除的集合为空!');
+
+  if (!pKyName) pKyName = 'id';
+
+  // 将主键列表根据LIMIT_NUM分割成若干个批量sql
+  const sqls = pKys.reduce(function(o, key, index) {
+    const idx = Math.floor(index / LIMIT_NUM);  // 获取当前执行操作的sql
+
+    if (o[idx] == null) o[idx] = '';
+
+    if (o[idx] !== '') o[idx] += ' or ';
+
+    o[idx] += pKyName + ' = ' +
+      (typeof key === 'string'
+        ? addQuotation(key)
+        : key);
+
+    return o;
+  }, [])
+
+  Promise.all(sqls.map(function(sql) {
+    const s = 'delete from ' + tbName + ' where ' + sql;
+    return query(s); 
+  })).then(function() {
+    console.log('批量删除成功');
+  }, function(err) {
+    console.log('批量删除失败：', {code: err.code, msg: err.sqlMessage});
+  }).catch(function(error) {
+    console.log('操作异常:', {code: error.code, msg: error.sqlMessage});
+  })
+}
+
+
+
+
+
 
 /**
  * 执行数据库操作
