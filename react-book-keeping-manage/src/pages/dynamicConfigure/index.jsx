@@ -1,8 +1,10 @@
 import React, { useEffect, useCallback, Fragment, useRef } from 'react';
-import { Button } from 'antd';
+// import { Button } from 'antd';
 import { Header, Content } from '@/layouts/components/LayoutRender';
 import { connect } from 'dva'; 
 import { useSetState } from '@/utils/hooks';
+import Button from '../../basic-components/button';
+import { StarOutlined, StarFilled, StarTwoTone } from '@ant-design/icons';
 
 import List from './List';
 import FormSearch from './FormSearch';
@@ -30,40 +32,40 @@ const Index = ({
     valCodeSet
   } = state;
   
-  useEffect(() => {
-    dispatch({
-      type: 'dynamicConf/fetchConfigureList',
-      payload: {viewCode}
-    }).then((list) => {
-      if (list && Array.isArray(list)) {
-        const columns = [];
-        const queryFields = [];
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'dynamicConf/fetchConfigureList',
+  //     payload: {viewCode}
+  //   }).then((list) => {
+  //     if (list && Array.isArray(list)) {
+  //       const columns = [];
+  //       const queryFields = [];
 
-        list.forEach((item) => {
-          // 是否为筛选节点
-          if (item.queryFlag) {
-            queryFields.push({
-              name: item.dataIndex,
-              label: item.title,
-              ...item,
-            });
-          } else if (Number(item.fieldVisible)) {
-            const key =
-              item.fieldWidget === 'LOV' || item.fieldWidget === 'SELECT'
-                ? `${item.dataIndex}Meaning`
-                : item.dataIndex;
-            columns.push({
-              dataIndex: key,
-              key,
-              ...item,
-            });
-          }
-        });
-        initialFields(columns, queryFields);
-      }
-    })
+  //       list.forEach((item) => {
+  //         // 是否为筛选节点
+  //         if (item.queryFlag) {
+  //           queryFields.push({
+  //             name: item.dataIndex,
+  //             label: item.title,
+  //             ...item,
+  //           });
+  //         } else if (Number(item.fieldVisible)) {
+  //           const key =
+  //             item.fieldWidget === 'LOV' || item.fieldWidget === 'SELECT'
+  //               ? `${item.dataIndex}Meaning`
+  //               : item.dataIndex;
+  //           columns.push({
+  //             dataIndex: key,
+  //             key,
+  //             ...item,
+  //           });
+  //         }
+  //       });
+  //       initialFields(columns, queryFields);
+  //     }
+  //   })
     
-  }, [viewCode])
+  // }, [viewCode])
 
   const initialFields = useCallback((columns, queryFields) => {
     const valCodeSet = {};
@@ -109,6 +111,8 @@ const Index = ({
   
   // 新建行方法
   const onCreate = useCallback(() => {
+    console.log('1111');
+    return;
     childRef.current.handleCreateLine && childRef.current.handleCreateLine(); 
   }, []);
 
@@ -131,8 +135,67 @@ const Index = ({
   return (
     <Fragment>
       <Header>
-        <Button type="primary" onClick={onCreate}>新建</Button>
-        <Button onClick={onSave}>保存</Button>
+        <Button
+          type="primary"
+          size={'lg'}
+          danger
+          loading
+          shape="round"
+          icon={<StarOutlined />}
+          onClick={onCreate}>新建</Button>
+        <Button
+          danger
+          size={'sm'}
+          type="dashed"
+          icon={<StarOutlined />}
+        >
+          虚线
+        </Button>
+        <Button
+          danger
+          disabled
+          size={'sm'}
+          icon={<StarOutlined />}
+        >
+          实线
+        </Button>
+        <Button
+          danger
+          type="text"
+          icon={<StarOutlined />}
+        >
+          文本
+        </Button>
+        <Button
+          danger
+          disabled
+          type="link"
+          href={'http://www.baidu.com'}
+          target={'_blank'}
+          icon={<StarOutlined />}
+        >
+          Link
+        </Button>
+        <Button
+          type={'primary'}
+          size={'sm'}
+          shape={'circle'}
+          icon={<StarOutlined />}
+        >
+        </Button>
+        <Button
+          type={'primary'}
+          shape={'circle'}
+          icon={<StarOutlined />}
+        >
+        </Button>
+        <Button
+          type={'primary'}
+          size={'lg'}
+          shape={'circle'}
+          icon={<StarOutlined />}
+        >
+        </Button>
       </Header>
       <Content>
         {initialable && (

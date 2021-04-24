@@ -60,7 +60,7 @@ const List = ({
     ) || [];
 
     setColList(list)
-    fetchList();
+    // fetchList();
   }, [viewCode, colsLen])
 
   const fetchList = useCallback(() => {
